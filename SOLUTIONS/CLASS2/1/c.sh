@@ -1,0 +1,1 @@
+NORNIR_CORE_NUM_WORKERS=10 python b.py

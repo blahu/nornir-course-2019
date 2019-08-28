@@ -1,0 +1,8 @@
+host1:
+    hostname: 'host1'
+    groups:
+        - ios
+host2:
+    hostname: 'host2'
+    groups:
+        - ios

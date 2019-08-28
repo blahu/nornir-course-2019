@@ -1,0 +1,6 @@
+ios:
+    platform: 'ios'
+    username: 'u'
+    password: 'p'
+    port: 22
+    
