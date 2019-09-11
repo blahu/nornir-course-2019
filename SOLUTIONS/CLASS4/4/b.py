@@ -5,18 +5,20 @@ from nornir.plugins.tasks import networking, text
 from nornir.plugins.functions.text import print_result
 
 import argparse
+from pprint import pprint
 
 
 
 def options_parse():
     parser = argparse.ArgumentParser(description='Add vlan')
-    parser.add_argument('--dry_run', action="store_true", help='dry run?')
+    parser.add_argument('--dryrun', action="store_true", help='dry run?')
     parser.add_argument('id', type=int, help='vlan_id')
     parser.add_argument('name', type=str, help='vlan_name')
     args = parser.parse_args()
-    return args.id, args.name, args.dry_run
+    pprint(args)
+    return args.id, args.name, args.dryrun
 
-def add_vlan(task, vlan_id, vlan_namei, dry_run=False):
+def add_vlan(task, vlan_id, vlan_name, dry_run=False):
     vlan_config = f"vlan {vlan_id}\nname {vlan_name}\n"
 
     if task.host.platform == 'nxos':
@@ -52,7 +54,7 @@ def add_vlan(task, vlan_id, vlan_namei, dry_run=False):
         current_name = r.result[0]['name']
         if current_name != vlan_name:
             ### update vlan name
-            conf_result=task.run(task=networking.napalm_configure,
+            config_result=task.run(task=networking.napalm_configure,
                 configuration=vlan_config,
                 dry_run=dry_run
             )
@@ -62,7 +64,7 @@ def add_vlan(task, vlan_id, vlan_namei, dry_run=False):
     return result
 
 def main():
-    vlan_id, vlan_namei, dry_run = options_parse()
+    vlan_id, vlan_name, dry_run = options_parse()
     print(f"vlan_id={vlan_id}")
     print(f"vlan_name={vlan_name}")
     print(f"dry_run={dry_run}")
