@@ -42,8 +42,12 @@ def add_vlan(task, vlan_id, vlan_name, dry_run=False):
             configuration=vlan_config,
             dry_run=dry_run
         )
-        result.changed = config_result.result.changed
-        result.result = f"Vlan {vlan_id} not found - create it from scratch"
+        if dry_run:
+            result.changed = False
+            result.result = f"DRYRUN: Vlan {vlan_id} not found - create it from scratch"
+        else:
+            result.changed = config_result.result.changed
+            result.result = f"Vlan {vlan_id} not found - create it from scratch"
 
     if isinstance(r.result, str) and 'Invalid' in r.result:
         result.failed = True
@@ -58,8 +62,12 @@ def add_vlan(task, vlan_id, vlan_name, dry_run=False):
                 configuration=vlan_config,
                 dry_run=dry_run
             )
-            result.changed = config_result.result.changed
-            result.result = f"Vlan {vlan_id} - wrong name ({current_name}) - updating to {vlan_name}"
+            if dry_run:
+                result.changed = False
+                result.result = f"DRYRUN: Vlan {vlan_id} - wrong name ({current_name}) - updating to {vlan_name}"
+            else:
+                result.changed = config_result.result.changed
+                result.result = f"Vlan {vlan_id} - wrong name ({current_name}) - updating to {vlan_name}"
 
     return result
 
