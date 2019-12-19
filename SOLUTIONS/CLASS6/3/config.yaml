@@ -1,6 +1,8 @@
 ---
 logging:
-    enabled: false
+    enabled: true
+    level: DEBUG
+    file: logfile_a.log
 inventory:
     plugin: nornir.plugins.inventory.simple.SimpleInventory
     options:
